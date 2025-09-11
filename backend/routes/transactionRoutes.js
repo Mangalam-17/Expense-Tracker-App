@@ -36,4 +36,19 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Update Operation, update a transaction via id 
+router.put("/:id", async (req, res) => {
+  try {
+    const updatedTransaction = await Transaction.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!updatedTransaction) return res.status(404).json({ error: "Transaction not found" });
+    res.json(updatedTransaction);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 module.exports = router;
