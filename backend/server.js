@@ -14,12 +14,12 @@ mongoose
   .then(() => console.log("MongoDB connected successfully"))
   .catch((err) => console.error("Failed to connect MongoDB : ", err));
 
+app.get("/health", (_req, res) => res.json({ ok: true }));
+
+const transactionRoutes = require("./routes/transactionRoutes");
+app.use("/api/transactions", transactionRoutes);
+
 const PORT = process.env.PORT || 5000;
-
-app.get("/", (req, res) => {
-  res.send("API is running successfully !");
-});
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
