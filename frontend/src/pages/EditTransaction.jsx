@@ -7,19 +7,39 @@ const EditTransaction = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [transaction, setTransaction] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState(null);
 
   useEffect(() => {
-    const fetchTransaction = async () => {
-      const res = await getTransaction(id);
-      setTransaction(res.data);
+    let ignore = false;
+    (async () => {
+      try {
+        setLoading(true);
+        setErr(null);
+        const res = await getTransaction(id);
+        if (!ignore) setTransaction(res.data);
+      } catch (e) {
+        if (!ignore) setErr(e?.response?.data?.error || e.message);
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    })();
+    return () => {
+      ignore = true;
     };
-    fetchTransaction();
   }, [id]);
 
   const handleSubmit = async (data) => {
-    await updateTransaction(id, data);
-    navigate("/");
+    try {
+      await updateTransaction(id, data);
+      navigate("/");
+    } catch (e) {
+      alert(e?.response?.data?.error || e.message);
+    }
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (err) return <p style={{ color: "red" }}>Error: {err}</p>;
 
   return (
     <div>

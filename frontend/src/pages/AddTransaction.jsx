@@ -6,8 +6,12 @@ const AddTransaction = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (data) => {
-    await createTransaction(data);
-    navigate("/");
+    try {
+      await createTransaction(data);
+      navigate("/");
+    } catch (e) {
+      alert(e?.response?.data?.error || e.message);
+    }
   };
 
   return (

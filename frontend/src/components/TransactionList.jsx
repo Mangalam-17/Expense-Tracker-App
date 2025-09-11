@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const TransactionList = ({ transactions, onDelete }) => {
   return (
     <table>
@@ -20,8 +22,9 @@ const TransactionList = ({ transactions, onDelete }) => {
             <td>{t.type}</td>
             <td>{t.category}</td>
             <td>{t.description}</td>
-            <td>{new Date(t.date).toLocaleDateString()}</td>
+            <td>{t.date ? new Date(t.date).toLocaleDateString() : "-"}</td>
             <td>
+              <Link to={`/${t._id}/edit`}>Edit</Link>{" "}
               <button onClick={() => onDelete(t._id)}>Delete</button>
             </td>
           </tr>
