@@ -6,6 +6,7 @@ import {
 } from "../api";
 import TransactionList from "../components/TransactionList";
 import { useNavigate } from "react-router-dom";
+import "../styles.css";
 
 const HomePage = () => {
   const [transactions, setTransactions] = useState([]);
@@ -52,7 +53,7 @@ const HomePage = () => {
       await fetchTransactions();
     })();
     return () => {
-      ignore = true; // pattern placeholder if adding subscriptions later
+      ignore = true;
     };
   }, []);
 
