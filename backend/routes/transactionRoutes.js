@@ -36,7 +36,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Update Operation, update a transaction via id 
+// Update Operation, update a transaction via id
 router.put("/:id", async (req, res) => {
   try {
     const updatedTransaction = await Transaction.findByIdAndUpdate(
@@ -44,11 +44,37 @@ router.put("/:id", async (req, res) => {
       req.body,
       { new: true, runValidators: true }
     );
-    if (!updatedTransaction) return res.status(404).json({ error: "Transaction not found" });
+    if (!updatedTransaction)
+      return res.status(404).json({ error: "Transaction not found" });
     res.json(updatedTransaction);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
+// Delete Operation, delete all transactions
+router.delete("/", async (req, res) => {
+  try {
+    const result = await Transaction.deleteMany({});
+    res.json({
+      message: `${result.deletedCount} transactions deleted successfully`,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete Operation, delete a transaction via id
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedTransaction = await Transaction.findByIdAndDelete(
+      req.params.id
+    );
+    if (!deletedTransaction)
+      return res.status(404).json({ error: "Transaction not found" });
+    res.json({ message: "Transaction deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 module.exports = router;
