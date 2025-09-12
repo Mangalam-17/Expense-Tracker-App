@@ -15,9 +15,13 @@ const AddTransaction = () => {
   };
 
   return (
-    <div>
-      <h1>Add Transaction</h1>
-      <TransactionForm onSubmit={handleSubmit} />
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full mt-8">
+        <h1 className="text-3xl font-bold mb-6 text-blue-700">
+          Add Transaction
+        </h1>
+        <TransactionForm onSubmit={handleSubmit} />
+      </div>
     </div>
   );
 };

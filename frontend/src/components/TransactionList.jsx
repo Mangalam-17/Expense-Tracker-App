@@ -46,20 +46,21 @@ const TransactionList = ({ transactions, onDelete }) => (
           <td className="px-4 py-2 whitespace-nowrap">
             {t.date ? new Date(t.date).toLocaleDateString() : "-"}
           </td>
-          <td className="px-4 py-2">
-            <Link
-              to={`/${t._id}/edit`}
-              className="text-blue-600 hover:underline mr-2"
-            >
-              Edit
-            </Link>
-            <button
-              onClick={() => onDelete(t._id)}
-              className="text-red-500 hover:text-red-700"
-            >
-              Delete
-            </button>
-          </td>
+          <td className="px-4 py-2 flex gap-2">
+  <Link
+    to={`/${t._id}/edit`}
+    className="px-3 py-1 rounded bg-blue-100 text-blue-700 font-semibold hover:bg-blue-200 hover:text-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-300"
+  >
+    Edit
+  </Link>
+  <button
+    onClick={() => onDelete(t._id)}
+    className="px-3 py-1 rounded bg-red-100 text-red-700 font-semibold hover:bg-red-200 hover:text-red-800 transition-colors focus:outline-none focus:ring-2 focus:ring-red-300"
+  >
+    Delete
+  </button>
+</td>
+
         </tr>
       ))}
     </tbody>
