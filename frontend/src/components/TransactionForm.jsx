@@ -16,7 +16,6 @@ const toDateInput = (value) => {
   return Number.isNaN(d.getTime()) ? "" : d.toISOString().slice(0, 10);
 };
 
-// Move InputField component OUTSIDE the main component
 const InputField = ({
   icon: Icon,
   name,
@@ -77,7 +76,7 @@ const InputField = ({
             disabled={isSubmitting}
           />
         )}
-        {/* Status icon */}
+
         {touched[name] && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
             {hasError ? (
@@ -88,7 +87,6 @@ const InputField = ({
           </div>
         )}
       </div>
-      {/* Error message */}
       {hasError && (
         <p className="text-red-600 text-sm mt-1 animate-pulse flex items-center">
           <AlertCircle className="h-4 w-4 mr-1" />
@@ -128,7 +126,6 @@ const TransactionForm = ({ onSubmit, initialData = {} }) => {
     }
   }, [initialData]);
 
-  // Validation logic
   const validateField = (name, value) => {
     switch (name) {
       case "title":
@@ -178,7 +175,6 @@ const TransactionForm = ({ onSubmit, initialData = {} }) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Validate all fields
     const newErrors = {};
     Object.keys(form).forEach((key) => {
       const error = validateField(key, form[key]);
@@ -192,7 +188,6 @@ const TransactionForm = ({ onSubmit, initialData = {} }) => {
       category: true,
     });
 
-    // If no errors, submit
     if (Object.keys(newErrors).length === 0) {
       try {
         await onSubmit({

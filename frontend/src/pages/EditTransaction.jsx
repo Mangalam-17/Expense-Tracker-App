@@ -33,7 +33,7 @@ const EditTransaction = () => {
   const handleSubmit = async (data) => {
     try {
       await updateTransaction(id, data);
-      navigate("/");
+      navigate("/", { state: { updated: true } });
     } catch (e) {
       alert(e?.response?.data?.error || e.message);
     }
@@ -75,7 +75,6 @@ const EditTransaction = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full mt-8">
-        {/* Header with back button and title */}
         <div className="flex items-center mb-6">
           <button
             onClick={() => navigate("/")}
@@ -99,7 +98,6 @@ const EditTransaction = () => {
           </div>
         </div>
 
-        {/* Transaction form */}
         {transaction && (
           <TransactionForm onSubmit={handleSubmit} initialData={transaction} />
         )}
