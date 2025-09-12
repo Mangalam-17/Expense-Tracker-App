@@ -69,6 +69,7 @@ const Toast = ({ toast, onClose }) => {
 
 const HomePage = () => {
   const [transactions, setTransactions] = useState([]);
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
   const [toast, setToast] = useState(null);
@@ -77,6 +78,9 @@ const HomePage = () => {
   const [confirmTitle, setConfirmTitle] = useState("");
   const [confirmMessage, setConfirmMessage] = useState("");
   const [confirmAction, setConfirmAction] = useState(null);
+
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -87,6 +91,7 @@ const HomePage = () => {
       setErr(null);
       const res = await getAllTransactions();
       setTransactions(res.data);
+      setFilteredTransactions(res.data);
     } catch (e) {
       setErr(e?.response?.data?.error || e.message);
     } finally {
@@ -136,6 +141,27 @@ const HomePage = () => {
     setConfirmOpen(true);
   };
 
+  const handleFilter = () => {
+    let filtered = [...transactions];
+
+    if (selectedCategory) {
+      filtered = filtered.filter((t) => t.category === selectedCategory);
+    }
+    if (selectedDate) {
+      filtered = filtered.filter(
+        (t) => new Date(t.date).toISOString().split("T")[0] === selectedDate
+      );
+    }
+
+    setFilteredTransactions(filtered);
+  };
+
+  const resetFilters = () => {
+    setSelectedCategory("");
+    setSelectedDate("");
+    setFilteredTransactions(transactions);
+  };
+
   useEffect(() => {
     fetchTransactions();
   }, []);
@@ -174,6 +200,7 @@ const HomePage = () => {
           Track, update, and manage your expenses easily
         </p>
 
+        {/* Buttons */}
         <div className="flex flex-wrap gap-4 mb-6 bg-gray-50 p-4 rounded-lg shadow-sm">
           <button
             onClick={() => navigate("/add")}
@@ -189,6 +216,41 @@ const HomePage = () => {
           </button>
         </div>
 
+        {/* Filter Section */}
+        <div className="flex flex-wrap gap-4 mb-6 bg-gray-50 p-4 rounded-lg shadow-sm">
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="">All Categories</option>
+            <option value="Food">Food</option>
+            <option value="Travel">Travel</option>
+            <option value="Bills">Bills</option>
+            <option value="Entertainment">Entertainment</option>
+          </select>
+
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+
+          <button
+            onClick={handleFilter}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            Apply Filters
+          </button>
+          <button
+            onClick={resetFilters}
+            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
+          >
+            Reset Filters
+          </button>
+        </div>
+
         {loading ? (
           <p className="text-gray-500">Loading...</p>
         ) : err ? (
@@ -201,7 +263,7 @@ const HomePage = () => {
               Retry
             </button>
           </div>
-        ) : transactions.length === 0 ? (
+        ) : filteredTransactions.length === 0 ? (
           <div className="text-center py-10 text-gray-500">
             <p className="text-2xl mb-2">📭</p>
             <p>No transactions found. Start by adding one!</p>
@@ -209,7 +271,7 @@ const HomePage = () => {
         ) : (
           <div className="overflow-x-auto rounded-lg border border-gray-200">
             <TransactionList
-              transactions={transactions}
+              transactions={filteredTransactions}
               onDelete={handleDelete}
             />
           </div>
