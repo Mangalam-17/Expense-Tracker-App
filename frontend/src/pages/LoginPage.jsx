@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, useCallback } from "react";
 import { Navigate, Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import { Typewriter } from "react-simple-typewriter";
@@ -55,14 +55,14 @@ const LoginPage = () => {
     }
   };
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i = 1) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.2 },
-    }),
-  };
+  // const fadeInUp = {
+  //   hidden: { opacity: 0, y: 20 },
+  //   visible: (i = 1) => ({
+  //     opacity: 1,
+  //     y: 0,
+  //     transition: { delay: i * 0.2 },
+  //   }),
+  // };
 
   return (
     <>
@@ -106,12 +106,13 @@ const LoginPage = () => {
       />
 
       <div className="min-h-screen flex flex-col items-center justify-center bg-neutral-50 p-6 relative z-10">
-        <motion.div
+        {/* Replace motion.div with div */}
+        <div
           className="text-center mb-10 max-w-md w-full"
-          initial="hidden"
-          animate="visible"
-          variants={fadeInUp}
-          custom={0}
+          // initial="hidden"
+          // animate="visible"
+          // variants={fadeInUp}
+          // custom={0}
         >
           <h1 className="text-5xl font-extrabold text-neutral-900 tracking-tight mb-1">
             Expense Tracker
@@ -131,37 +132,40 @@ const LoginPage = () => {
               delaySpeed={1000}
             />
           </span>
-        </motion.div>
+        </div>
 
-
-        <motion.div
+        {/* Replace motion.div with div */}
+        <div
           className="bg-white shadow-lg rounded-xl p-8 max-w-md w-full border border-neutral-200"
-          initial="hidden"
-          animate="visible"
-          variants={fadeInUp}
-          custom={1}
+          // initial="hidden"
+          // animate="visible"
+          // variants={fadeInUp}
+          // custom={1}
         >
-          <motion.h2
+          {/* Replace motion.h2 with h2 */}
+          <h2
             className="text-4xl font-extrabold text-center text-neutral-900 mb-8 tracking-tight"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            // initial={{ opacity: 0 }}
+            // animate={{ opacity: 1 }}
           >
             Welcome Back 👋
-          </motion.h2>
+          </h2>
 
           {error && (
-            <motion.div
+            // Replace motion.div with div
+            <div
               className="mb-6 text-red-700 bg-red-100 border border-red-300 p-3 rounded text-center font-medium"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              // initial={{ opacity: 0 }}
+              // animate={{ opacity: 1 }}
             >
               {error}
-            </motion.div>
+            </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {["email", "password"].map((field, idx) => (
-              <motion.input
+              // Replace motion.input with input
+              <input
                 key={field}
                 type={field}
                 name={field}
@@ -169,36 +173,38 @@ const LoginPage = () => {
                 value={form[field]}
                 onChange={handleChange}
                 required
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: (idx + 2) * 0.2 }}
+                // initial={{ opacity: 0, y: 10 }}
+                // animate={{ opacity: 1, y: 0 }}
+                // transition={{ delay: (idx + 2) * 0.2 }}
                 className="w-full px-4 py-3 border border-neutral-300 rounded-md bg-white text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition"
               />
             ))}
 
-            <motion.button
+            {/* Replace motion.button with button */}
+            <button
               type="submit"
               disabled={submitting}
-              whileTap={{ scale: submitting ? 1 : 0.97 }}
+              // whileTap={{ scale: submitting ? 1 : 0.97 }}
               className={`w-full py-3 rounded-lg font-semibold text-white shadow-md transition duration-300 ease-in-out
                 ${
                   submitting
                     ? "bg-neutral-400 cursor-not-allowed shadow-sm"
                     : "bg-neutral-900 hover:bg-neutral-800 shadow-lg"
                 }`}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 4 * 0.2 }}
+              // initial={{ opacity: 0, y: 10 }}
+              // animate={{ opacity: 1, y: 0 }}
+              // transition={{ delay: 4 * 0.2 }}
             >
               {submitting ? "Logging In..." : "Login"}
-            </motion.button>
+            </button>
           </form>
 
-          <motion.p
+          {/* Replace motion.p with p */}
+          <p
             className="mt-8 text-center text-neutral-500 text-sm"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 4.5 * 0.2 }}
+            // initial={{ opacity: 0, y: 10 }}
+            // animate={{ opacity: 1, y: 0 }}
+            // transition={{ delay: 4.5 * 0.2 }}
           >
             Don’t have an account?{" "}
             <Link
@@ -207,8 +213,8 @@ const LoginPage = () => {
             >
               Sign up
             </Link>
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
       </div>
     </>
   );

@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  // Setup axios with token header
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -35,25 +34,41 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token, user]);
 
-  // Signup API call
   const signup = async (name, email, password) => {
-    const response = await axios.post("/api/users/signup", {
-      name,
-      email,
-      password,
-    });
-    setUser(response.data.user);
-    setToken(response.data.user.token);
+    try {
+      const response = await axios.post("/api/users/signup", {
+        name,
+        email,
+        password,
+      });
+      console.log("Signup response ", response.data);
+      setUser(response.data.user);
+      setToken(response.data.user.token); // Check if token exists here, else adjust
+      console.log("Set User:", response.data.user);
+      console.log("Set Token:", response.data.user.token);
+    } catch (error) {
+      console.error("Signup error:", error);
+      throw error;
+    }
   };
 
-  // Login API call
   const login = async (email, password) => {
-    const response = await axios.post("/api/users/login", { email, password });
-    setUser(response.data.user);
-    setToken(response.data.user.token);
+    try {
+      const response = await axios.post("/api/users/login", {
+        email,
+        password,
+      });
+      console.log("Login response ", response.data);
+      setUser(response.data.user);
+      setToken(response.data.user.token); // Check if token exists here, else adjust
+      console.log("Set User:", response.data.user);
+      console.log("Set Token:", response.data.user.token);
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error;
+    }
   };
 
-  // Logout clears auth state
   const logout = () => {
     setUser(null);
     setToken(null);

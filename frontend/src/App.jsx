@@ -19,11 +19,21 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<SignupPage />} />
+          {/* Protect home (default) route */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
 
+          {/* Public routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
 
+          {/* Protected nested routes */}
           <Route
             path="/add-transaction"
             element={
@@ -40,14 +50,8 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/home"
-            element={
-              <ProtectedRoute>
-                <HomePage />
-              </ProtectedRoute>
-            }
-          />
+
+          {/* Catch-all redirect to home */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

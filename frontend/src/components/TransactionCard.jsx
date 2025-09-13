@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const TransactionCard = ({ txn, onEdit, onDelete }) => {
   return (
-    <motion.li
+    <motion.div
       className={`flex justify-between items-center rounded-lg border p-5 shadow-sm hover:shadow-lg transition duration-300 bg-white
         ${
           txn.type === "income"
@@ -49,7 +49,7 @@ const TransactionCard = ({ txn, onEdit, onDelete }) => {
           Delete
         </button>
       </div>
-    </motion.li>
+    </motion.div>
   );
 };
 
