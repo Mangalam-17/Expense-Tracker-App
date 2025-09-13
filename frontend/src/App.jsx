@@ -6,6 +6,8 @@ import SignupPage from "./pages/SignupPage";
 import HomePage from "./pages/HomePage";
 import AddTransaction from "./pages/AddTransaction";
 import EditTransaction from "./pages/EditTransaction";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -40,6 +42,7 @@ function App() {
           />
         </Routes>
       </Router>
+      <ToastContainer position="top-right" autoClose={3000} />
     </AuthProvider>
   );
 }
