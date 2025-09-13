@@ -5,8 +5,7 @@ A full-stack web application built with MERN stack that helps users manage their
 ---
 
 ## Demo
-
-expense-tracker-app-henna-alpha.vercel.app
+https://expense-tracker-app-henna-alpha.vercel.app/login
 
 ---
 
