@@ -7,3 +7,23 @@ dist
 
 # Logs
 npm-debug.log*
+
+# macOS files
+.DS_Store
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory
+coverage
+
+# Vite cache
+.vite
