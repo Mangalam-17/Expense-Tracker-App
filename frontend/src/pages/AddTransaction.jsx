@@ -1,29 +1,38 @@
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
+import axios from "axios";
 import TransactionForm from "../components/TransactionForm";
-import { createTransaction } from "../api";
+import Navbar from "../components/Navbar";
 
-const AddTransaction = () => {
+const AddTransactionPage = () => {
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (data) => {
+  const handleAddTransaction = async (data) => {
+    setLoading(true);
     try {
-      await createTransaction(data);
+      await axios.post("/api/transactions", data);
+      setLoading(false);
       navigate("/");
-    } catch (e) {
-      alert(e?.response?.data?.error || e.message);
+    } catch (err) {
+      alert(err.response?.data?.error || "Failed to add transaction");
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full mt-8">
+    <>
+      <Navbar />
+      <div className="min-h-screen p-6 bg-gray-50 max-w-xl mx-auto">
         <h1 className="text-3xl font-bold mb-6 text-blue-700">
           Add Transaction
         </h1>
-        <TransactionForm onSubmit={handleSubmit} />
+        <TransactionForm onSubmit={handleAddTransaction} loading={loading} />
       </div>
-    </div>
+    </>
   );
 };
 
-export default AddTransaction;
+export default AddTransactionPage;

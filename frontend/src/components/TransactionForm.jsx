@@ -1,331 +1,148 @@
-import { useState, useEffect, useRef } from "react";
-import {
-  User,
-  DollarSign,
-  TrendingUp,
-  Tag,
-  FileText,
-  Calendar,
-  AlertCircle,
-  CheckCircle2,
-} from "lucide-react";
+import { useState, useEffect } from "react";
 
-const toDateInput = (value) => {
-  if (!value) return "";
-  const d = new Date(value);
-  return Number.isNaN(d.getTime()) ? "" : d.toISOString().slice(0, 10);
-};
-
-const InputField = ({
-  icon: Icon,
-  name,
-  type = "text",
-  placeholder,
-  required = false,
-  children,
-  form,
-  errors,
-  touched,
-  isSubmitting,
-  onChange,
-  onBlur,
-}) => {
-  const hasError = errors[name] && touched[name];
-  const hasValue = form[name];
-
-  return (
-    <div className="space-y-1">
-      <label className="block text-sm font-medium text-gray-700" htmlFor={name}>
-        {placeholder}
-        {required && <span className="text-red-500 ml-1">*</span>}
-      </label>
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Icon
-            className={`h-5 w-5 transition-colors duration-200 ${
-              hasError
-                ? "text-red-400"
-                : hasValue
-                  ? "text-green-500"
-                  : "text-gray-400"
-            }`}
-          />
-        </div>
-        {children || (
-          <input
-            id={name}
-            name={name}
-            type={type}
-            value={form[name]}
-            onChange={onChange}
-            onBlur={onBlur}
-            className={`
-              w-full pl-10 pr-10 py-3 rounded-lg border transition-all duration-300 ease-in-out
-              focus:outline-none focus:ring-2 placeholder-gray-400
-              ${
-                hasError
-                  ? "border-red-300 focus:border-red-500 focus:ring-red-200 bg-red-50"
-                  : hasValue
-                    ? "border-green-300 focus:border-green-500 focus:ring-green-200 bg-green-50"
-                    : "border-gray-300 focus:border-blue-500 focus:ring-blue-200 bg-white"
-              }
-              ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}
-            `}
-            placeholder={placeholder}
-            required={required}
-            disabled={isSubmitting}
-          />
-        )}
-
-        {touched[name] && (
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-            {hasError ? (
-              <AlertCircle className="h-5 w-5 text-red-400 animate-pulse" />
-            ) : hasValue ? (
-              <CheckCircle2 className="h-5 w-5 text-green-500 animate-bounce" />
-            ) : null}
-          </div>
-        )}
-      </div>
-      {hasError && (
-        <p className="text-red-600 text-sm mt-1 animate-pulse flex items-center">
-          <AlertCircle className="h-4 w-4 mr-1" />
-          {errors[name]}
-        </p>
-      )}
-    </div>
-  );
-};
-
-const TransactionForm = ({ onSubmit, initialData = {} }) => {
-  const didMountRef = useRef(false);
+const TransactionForm = ({ onSubmit, initialData = {}, loading }) => {
   const [form, setForm] = useState({
     title: "",
     amount: "",
-    type: "income",
+    type: "expense",
     category: "",
-    description: "",
     date: "",
+    description: "",
   });
 
-  const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
-    if (!didMountRef.current) {
+    if (initialData && initialData._id) {
+      let dateValue = "";
+      if (initialData.date) {
+        dateValue = initialData.date.split("T")[0];
+      }
       setForm({
         title: initialData.title || "",
-        amount: initialData.amount ?? "",
-        type: initialData.type || "income",
+        amount: initialData.amount || "",
+        type: initialData.type || "expense",
         category: initialData.category || "",
+        date: dateValue,
         description: initialData.description || "",
-        date: toDateInput(initialData.date),
       });
-      didMountRef.current = true;
+    } else {
+      // Only initialize once for add mode, not on every render
+      setForm({
+        title: "",
+        amount: "",
+        type: "expense",
+        category: "",
+        date: "",
+        description: "",
+      });
     }
-  }, [initialData]);
-
-  const validateField = (name, value) => {
-    switch (name) {
-      case "title":
-        return !value.trim() ? "Title is required" : "";
-      case "amount":
-        return !value || Number(value) <= 0
-          ? "Amount must be greater than 0"
-          : "";
-      case "category":
-        return !value.trim() ? "Category is required" : "";
-      default:
-        return "";
-    }
-  };
+  }, [initialData?._id]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    const newValue = name === "amount" ? Number(value) : value;
-
-    setForm((prev) => ({
-      ...prev,
-      [name]: newValue,
-    }));
-
-    // Real-time validation
-    if (touched[name]) {
-      const error = validateField(name, value);
-      setErrors((prev) => ({
-        ...prev,
-        [name]: error,
-      }));
-    }
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleBlur = (e) => {
-    const { name, value } = e.target;
-    setTouched((prev) => ({ ...prev, [name]: true }));
-
-    const error = validateField(name, value);
-    setErrors((prev) => ({
-      ...prev,
-      [name]: error,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setFormError("");
 
-    const newErrors = {};
-    Object.keys(form).forEach((key) => {
-      const error = validateField(key, form[key]);
-      if (error) newErrors[key] = error;
-    });
-
-    setErrors(newErrors);
-    setTouched({
-      title: true,
-      amount: true,
-      category: true,
-    });
-
-    if (Object.keys(newErrors).length === 0) {
-      try {
-        await onSubmit({
-          ...form,
-          date: form.date ? new Date(form.date).toISOString() : undefined,
-        });
-      } catch (error) {
-        console.error("Submission error:", error);
-      }
+    if (
+      !form.title ||
+      !form.amount ||
+      !form.type ||
+      !form.category ||
+      !form.date
+    ) {
+      setFormError("All fields except description are required.");
+      return;
     }
 
-    setIsSubmitting(false);
+    onSubmit({ ...form, amount: Number(form.amount) });
   };
 
   return (
-    <div className="transform transition-all duration-500 ease-in-out">
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <InputField
-          icon={User}
+    <div className="mb-6 p-4 bg-white shadow rounded-md max-w-xl">
+      <h2 className="text-lg font-semibold mb-2 text-blue-700">
+        {initialData && initialData._id
+          ? "Edit Transaction"
+          : "Add Transaction"}
+      </h2>
+      {formError && (
+        <div className="mb-2 text-red-600 bg-red-100 border border-red-300 p-2 rounded">
+          {formError}
+        </div>
+      )}
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-wrap gap-3 items-center"
+      >
+        <input
+          type="text"
           name="title"
-          placeholder="Transaction Title"
-          required
-          form={form}
-          errors={errors}
-          touched={touched}
-          isSubmitting={isSubmitting}
+          placeholder="Title"
+          value={form.title}
           onChange={handleChange}
-          onBlur={handleBlur}
+          required
+          className="flex-1 px-2 py-1 border rounded"
         />
-
-        <InputField
-          icon={DollarSign}
-          name="amount"
+        <input
           type="number"
+          name="amount"
           placeholder="Amount"
+          value={form.amount}
+          onChange={handleChange}
           required
-          form={form}
-          errors={errors}
-          touched={touched}
-          isSubmitting={isSubmitting}
-          onChange={handleChange}
-          onBlur={handleBlur}
+          min="1"
+          className="w-28 px-2 py-1 border rounded"
         />
-
-        <InputField
-          icon={TrendingUp}
+        <select
           name="type"
-          placeholder="Transaction Type"
-          form={form}
-          errors={errors}
-          touched={touched}
-          isSubmitting={isSubmitting}
+          value={form.type}
           onChange={handleChange}
-          onBlur={handleBlur}
+          required
+          className="w-32 px-2 py-1 border rounded"
         >
-          <select
-            id="type"
-            name="type"
-            value={form.type}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            className={`
-              w-full pl-10 pr-4 py-3 rounded-lg border transition-all duration-300 ease-in-out
-              focus:outline-none focus:ring-2 bg-white
-              ${
-                form.type === "income"
-                  ? "border-green-300 focus:border-green-500 focus:ring-green-200"
-                  : "border-red-300 focus:border-red-500 focus:ring-red-200"
-              }
-              ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}
-            `}
-            disabled={isSubmitting}
-          >
-            <option value="income">💰 Income</option>
-            <option value="expense">💸 Expense</option>
-          </select>
-        </InputField>
-
-        <InputField
-          icon={Tag}
+          <option value="expense">Expense</option>
+          <option value="income">Income</option>
+        </select>
+        <input
+          type="text"
           name="category"
           placeholder="Category"
+          value={form.category}
+          onChange={handleChange}
           required
-          form={form}
-          errors={errors}
-          touched={touched}
-          isSubmitting={isSubmitting}
-          onChange={handleChange}
-          onBlur={handleBlur}
+          className="w-32 px-2 py-1 border rounded"
         />
-
-        <InputField
-          icon={FileText}
-          name="description"
-          placeholder="Description (Optional)"
-          form={form}
-          errors={errors}
-          touched={touched}
-          isSubmitting={isSubmitting}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-
-        <InputField
-          icon={Calendar}
-          name="date"
+        <input
           type="date"
-          placeholder="Date"
-          form={form}
-          errors={errors}
-          touched={touched}
-          isSubmitting={isSubmitting}
+          name="date"
+          value={form.date}
           onChange={handleChange}
-          onBlur={handleBlur}
+          required
+          className="w-40 px-2 py-1 border rounded"
         />
-
+        <input
+          type="text"
+          name="description"
+          placeholder="Description (optional)"
+          value={form.description}
+          onChange={handleChange}
+          className="flex-1 px-2 py-1 border rounded"
+        />
         <button
           type="submit"
-          disabled={isSubmitting}
-          className={`
-            w-full py-3 px-4 rounded-lg font-semibold text-white transition-all duration-300 ease-in-out
-            focus:outline-none focus:ring-4 focus:ring-blue-300 transform
-            ${
-              isSubmitting
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 hover:scale-105 active:scale-95"
-            }
-            ${isSubmitting ? "animate-pulse" : "hover:shadow-lg"}
-          `}
+          disabled={loading}
+          className="px-4 py-1 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700 disabled:bg-blue-400"
         >
-          {isSubmitting ? (
-            <div className="flex items-center justify-center">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-              Submitting...
-            </div>
-          ) : (
-            "Submit Transaction"
-          )}
+          {loading
+            ? initialData && initialData._id
+              ? "Updating..."
+              : "Adding..."
+            : initialData && initialData._id
+              ? "Update"
+              : "Add"}
         </button>
       </form>
     </div>
