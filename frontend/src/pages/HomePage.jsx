@@ -4,6 +4,7 @@ import AuthContext from "../context/AuthContext";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import ConfirmModal from "../components/ConfirmModal";
+import TransactionCard from "../components/TransactionCard"; // Reusable card with icons
 import { toast } from "react-toastify";
 
 const HomePage = () => {
@@ -154,7 +155,7 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* Filter/Search Inputs */}
+          {/* Filter and Search Inputs */}
           <div className="flex flex-col sm:flex-row gap-4 items-end mb-7">
             <div className="w-full sm:w-48">
               <label
@@ -205,60 +206,18 @@ const HomePage = () => {
           {!loading && !error && filteredTransactions.length > 0 && (
             <ul className="space-y-5 max-w-3xl">
               {filteredTransactions.map((txn) => (
-                <li
+                <TransactionCard
                   key={txn._id}
-                  className={`flex justify-between items-center rounded-lg border p-5 shadow-sm hover:shadow-md transition
-                    ${
-                      txn.type === "income"
-                        ? "bg-green-50 border-green-200"
-                        : "bg-red-50 border-red-200"
-                    }
-                  `}
-                >
-                  <div>
-                    <h2 className="font-semibold text-neutral-900">
-                      {txn.title}
-                    </h2>
-                    <p className="text-sm text-neutral-500">
-                      {new Date(txn.date).toLocaleDateString()}
-                    </p>
-                    <p className="text-xs italic text-neutral-400">
-                      {txn.category}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`font-extrabold text-lg ${
-                        txn.type === "income"
-                          ? "text-green-700"
-                          : "text-red-600"
-                      }`}
-                    >
-                      ₹{txn.amount}
-                    </span>
-                    <button
-                      onClick={() =>
-                        navigate(`/edit-transaction/${txn._id}`, {
-                          state: {
-                            onSuccessMessage:
-                              "Transaction updated successfully",
-                          },
-                        })
-                      }
-                      className="px-4 py-1 bg-white text-neutral-700 rounded-md border border-neutral-300 hover:bg-neutral-100 transition"
-                      aria-label="Edit Transaction"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => askDeleteTransaction(txn._id)}
-                      className="px-4 py-1 bg-red-600 text-white rounded-md border border-red-700 hover:bg-red-700 transition"
-                      aria-label="Delete Transaction"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </li>
+                  txn={txn}
+                  onEdit={() =>
+                    navigate(`/edit-transaction/${txn._id}`, {
+                      state: {
+                        onSuccessMessage: "Transaction updated successfully",
+                      },
+                    })
+                  }
+                  onDelete={() => askDeleteTransaction(txn._id)}
+                />
               ))}
             </ul>
           )}
