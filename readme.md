@@ -2,12 +2,13 @@
 
 A full-stack web application built with MERN stack that helps users manage their personal finances by tracking income and expenses, offering insightful summaries with interactive features.
 
-***
+---
 
 ## Demo
+
 expense-tracker-app-henna-alpha.vercel.app
 
-***
+---
 
 ## Features
 
@@ -21,31 +22,31 @@ expense-tracker-app-henna-alpha.vercel.app
 - Visualization and particle effects for enhanced user experience
 - Hosted deployment with continuous integration
 
-***
+---
 
 ## Screenshots
 
-### Login Page  
-![Login Page]()
+### Login Page
 
+![Login Page](https://github.com/Mangalam-17/Expense-Tracker-App/blob/fbf11b631339e4b3e99bfcf74ceb134b3664e773/Screenshots/LoginPage.png)
 
-### Signup Page  
-![Signup Page]()
+### Signup Page
 
+![Signup Page](https://github.com/Mangalam-17/Expense-Tracker-App/blob/fbf11b631339e4b3e99bfcf74ceb134b3664e773/Screenshots/SingupPage.png)
 
-### Dashboard / Home Page  
-![Home Page]()
+### Dashboard / Home Page
 
+![Home Page](https://github.com/Mangalam-17/Expense-Tracker-App/blob/fbf11b631339e4b3e99bfcf74ceb134b3664e773/Screenshots/HomePage.png)
 
-### Add Transaction Form  
-![Add Transaction Form Page]()
+### Add Transaction Form
 
+![Add Transaction Form Page](https://github.com/Mangalam-17/Expense-Tracker-App/blob/fbf11b631339e4b3e99bfcf74ceb134b3664e773/Screenshots/AddTransaction.png)
 
-### Edit Transaction Form  
-![Edit Transaction Form Page]()
+### Edit Transaction Form
 
+![Edit Transaction Form Page](https://github.com/Mangalam-17/Expense-Tracker-App/blob/fbf11b631339e4b3e99bfcf74ceb134b3664e773/Screenshots/EditTransaction.png)
 
-***
+---
 
 ## Technologies Used
 
@@ -55,16 +56,18 @@ expense-tracker-app-henna-alpha.vercel.app
 - Deployment: Vercel / Render / GitHub Pages (specify your deploy platform)
 - Packages: react-tsparticles for particle effects, react-confetti for celebration effects
 
-***
+---
 
 ## Installation and Setup
 
 1. Clone the repository:
+
    ```
    git clone https://github.com/yourusername/expense-tracker-app.git
    ```
 
 2. Install dependencies:
+
    ```
    cd frontend
    npm install
@@ -77,6 +80,7 @@ expense-tracker-app-henna-alpha.vercel.app
    Create `.env` files in backend and frontend with:
 
    **Backend `.env`**
+
    ```
    MONGO_URI = your_mongodb_connection_string
    JWT_SECRET = your_jwt_secret_key
@@ -84,17 +88,20 @@ expense-tracker-app-henna-alpha.vercel.app
    ```
 
    **Frontend `.env`**
+
    ```
    VITE_API_URL=http://localhost:5000/api
    ```
 
 4. Run the backend server:
+
    ```
    cd backend
    npm run dev
    ```
 
 5. Run the frontend React app:
+
    ```
    cd ../frontend
    npm run dev
@@ -102,7 +109,7 @@ expense-tracker-app-henna-alpha.vercel.app
 
 6. Navigate to `http://localhost:5173` to use the app.
 
-***
+---
 
 ## Folder Structure
 
@@ -123,7 +130,7 @@ expense-tracker-app-henna-alpha.vercel.app
       |-- main.jsx
 ```
 
-***
+---
 
 ## Usage
 
@@ -134,18 +141,20 @@ expense-tracker-app-henna-alpha.vercel.app
 - View real-time updates on your total income, expenses, and balance.
 - Experience engaging animations and UI feedback throughout actions.
 
-***
+---
 
 ## Contribution
+
 Contributions are welcome! Please open an issue or submit a pull request for any feature requests, bug fixes, or improvements.
 
-***
+---
 
 ## License
 
 This project is licensed under the MIT License.
 
-***
+---
 
 ## Contact
+
 GitHub: https://github.com/Mangalam-17
