@@ -27,7 +27,6 @@ const TransactionForm = ({ onSubmit, initialData = {}, loading }) => {
         description: initialData.description || "",
       });
     } else {
-      // Only initialize once for add mode, not on every render
       setForm({
         title: "",
         amount: "",
@@ -62,8 +61,8 @@ const TransactionForm = ({ onSubmit, initialData = {}, loading }) => {
   };
 
   return (
-    <div className="mb-6 p-4 bg-white shadow rounded-md max-w-xl">
-      <h2 className="text-lg font-semibold mb-2 text-blue-700">
+    <div className="mb-6 p-6 bg-white shadow-lg rounded-xl max-w-xl">
+      <h2 className="text-xl font-semibold mb-5 text-neutral-900">
         {initialData && initialData._id
           ? "Edit Transaction"
           : "Add Transaction"}
@@ -75,7 +74,7 @@ const TransactionForm = ({ onSubmit, initialData = {}, loading }) => {
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-wrap gap-3 items-center"
+        className="flex flex-wrap gap-4 items-center"
       >
         <input
           type="text"
@@ -84,7 +83,7 @@ const TransactionForm = ({ onSubmit, initialData = {}, loading }) => {
           value={form.title}
           onChange={handleChange}
           required
-          className="flex-1 px-2 py-1 border rounded"
+          className="flex-1 min-w-[120px] px-3 py-2 border border-neutral-300 rounded-md bg-white text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 transition"
         />
         <input
           type="number"
@@ -94,14 +93,14 @@ const TransactionForm = ({ onSubmit, initialData = {}, loading }) => {
           onChange={handleChange}
           required
           min="1"
-          className="w-28 px-2 py-1 border rounded"
+          className="w-28 px-3 py-2 border border-neutral-300 rounded-md bg-white text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 transition"
         />
         <select
           name="type"
           value={form.type}
           onChange={handleChange}
           required
-          className="w-32 px-2 py-1 border rounded"
+          className="w-32 px-3 py-2 border border-neutral-300 rounded-md bg-white text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900 transition"
         >
           <option value="expense">Expense</option>
           <option value="income">Income</option>
@@ -113,7 +112,7 @@ const TransactionForm = ({ onSubmit, initialData = {}, loading }) => {
           value={form.category}
           onChange={handleChange}
           required
-          className="w-32 px-2 py-1 border rounded"
+          className="w-32 px-3 py-2 border border-neutral-300 rounded-md bg-white text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 transition"
         />
         <input
           type="date"
@@ -121,7 +120,7 @@ const TransactionForm = ({ onSubmit, initialData = {}, loading }) => {
           value={form.date}
           onChange={handleChange}
           required
-          className="w-40 px-2 py-1 border rounded"
+          className="w-40 px-3 py-2 border border-neutral-300 rounded-md bg-white text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900 transition"
         />
         <input
           type="text"
@@ -129,12 +128,16 @@ const TransactionForm = ({ onSubmit, initialData = {}, loading }) => {
           placeholder="Description (optional)"
           value={form.description}
           onChange={handleChange}
-          className="flex-1 px-2 py-1 border rounded"
+          className="flex-1 min-w-[120px] px-3 py-2 border border-neutral-300 rounded-md bg-white text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 transition"
         />
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-1 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700 disabled:bg-blue-400"
+          className={`px-6 py-2 rounded-lg font-semibold text-white shadow-md transition duration-300 ease-in-out ${
+            loading
+              ? "bg-neutral-400 cursor-not-allowed shadow-sm"
+              : "bg-neutral-900 hover:bg-neutral-800 shadow-lg"
+          }`}
         >
           {loading
             ? initialData && initialData._id

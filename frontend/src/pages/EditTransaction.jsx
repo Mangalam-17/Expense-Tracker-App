@@ -5,6 +5,7 @@ import axios from "axios";
 import TransactionForm from "../components/TransactionForm";
 import Navbar from "../components/Navbar";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 const EditTransaction = () => {
   const { id } = useParams();
@@ -41,12 +42,21 @@ const EditTransaction = () => {
     }
   };
 
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen pt-14 flex items-center justify-center bg-neutral-50 font-sans">
-        <div className="text-neutral-500 text-lg font-medium">
+        <motion.div
+          className="text-neutral-500 text-lg font-medium"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
           Loading transaction...
-        </div>
+        </motion.div>
       </div>
     );
   }
@@ -55,7 +65,12 @@ const EditTransaction = () => {
     <>
       <Navbar />
       <div className="min-h-screen pt-14 flex items-center justify-center bg-neutral-50 font-sans">
-        <div className="w-full max-w-md">
+        <motion.div
+          className="w-full max-w-md"
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}
+        >
           <div className="bg-white rounded-xl shadow-lg border border-neutral-200 p-8">
             <h1 className="text-3xl font-extrabold tracking-tight text-neutral-900 mb-6">
               Edit Transaction
@@ -66,7 +81,7 @@ const EditTransaction = () => {
               loading={formLoading}
             />
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );
