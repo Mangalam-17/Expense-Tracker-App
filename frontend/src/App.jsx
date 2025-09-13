@@ -19,14 +19,11 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Make root "/" load SignupPage */}
           <Route path="/" element={<SignupPage />} />
 
-          {/* Keep login and signup routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
 
-          {/* Protect add/edit/home routes */}
           <Route
             path="/add-transaction"
             element={
@@ -51,7 +48,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* Optionally, redirect unknown paths to signup */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

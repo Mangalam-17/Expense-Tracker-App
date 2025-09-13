@@ -108,7 +108,6 @@ const SignupPage = () => {
       />
 
       <div className="min-h-screen flex flex-col items-center justify-center bg-neutral-50 p-6 relative z-10">
-        {/* Branding above card */}
         <motion.div
           className="text-center mb-10 max-w-md w-full"
           initial="hidden"
@@ -136,7 +135,6 @@ const SignupPage = () => {
           </span>
         </motion.div>
 
-        {/* Form card */}
         <motion.div
           className="bg-white shadow-lg rounded-xl p-8 max-w-md w-full border border-neutral-200"
           initial="hidden"

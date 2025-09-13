@@ -398,7 +398,6 @@ const HomePage = () => {
                         })
                       }
                       onDelete={() => askDeleteTransaction(txn._id)}
-                      // Pass custom button styles and emoji for the edit button
                       editButtonClass="bg-yellow-400 hover:bg-yellow-300 text-black font-medium px-4 py-1 rounded-lg shadow hover:shadow-md transition cursor-pointer flex items-center gap-1"
                       editButtonEmoji="✏️"
                       deleteButtonClass="bg-red-500 hover:bg-red-600 text-white font-medium px-4 py-1 rounded-lg shadow hover:shadow-md transition cursor-pointer flex items-center gap-1"
